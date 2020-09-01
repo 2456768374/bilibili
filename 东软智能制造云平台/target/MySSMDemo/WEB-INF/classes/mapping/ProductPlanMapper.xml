@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.neusoft.dao.ProductPlanMapper" >
+  <resultMap id="BaseResultMap" type="com.neusoft.entity.ProductPlan" >
+    <result column="plan_num" property="planNum" jdbcType="VARCHAR" />
+    <result column="order_num" property="orderNum" jdbcType="VARCHAR" />
+    <result column="product_num" property="productNum" jdbcType="VARCHAR" />
+    <result column="plan_count" property="planCount" jdbcType="VARCHAR" />
+    <result column="plan_start_date" property="planStartDate" jdbcType="DATE" />
+    <result column="plan_end_date" property="planEndDate" jdbcType="DATE" />
+    <result column="plan_status" property="planStatus" jdbcType="VARCHAR" />
+    <result column="by1" property="by1" jdbcType="VARCHAR" />
+    <result column="by2" property="by2" jdbcType="VARCHAR" />
+    <result column="by3" property="by3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List">
+		plan_num, order_num, product_num, plan_count, plan_start_date, plan_end_date, plan_status
+	</sql>
+  <select id="selectAll"  resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from product_plan
+  </select>
+  <select id="selectByNum"  resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from product_plan
+    where product_num=#{product_num}
+  </select>
+  <select id="selectByPlan"  resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from product_plan
+    where plan_num=#{plan_num}
+  </select>
+  <update id="updateByStatus" parameterType="com.neusoft.entity.ProductOrder">
+		update product_plan
+		set plan_status = 2
+		where plan_num = #{plan_num}
+	</update>
+  <update id="updateByStatus2" parameterType="com.neusoft.entity.ProductOrder">
+		update product_plan
+		set plan_status = 3
+		where order_num = #{order_num}
+	</update>
+  <delete id="deleteByNum" parameterType="com.neusoft.entity.ProductOrder" >
+    delete from product_plan
+    where plan_num = #{plan_num}
+  </delete>
+
+  <insert id="insert" parameterType="com.neusoft.entity.ProductPlan" >
+    insert into product_plan (plan_num, order_num, product_num, 
+      plan_count, plan_start_date, plan_end_date, 
+      plan_status, by1, by2, 
+      by3)
+    values (#{planNum,jdbcType=VARCHAR}, #{orderNum,jdbcType=VARCHAR}, #{productNum,jdbcType=VARCHAR}, 
+      #{planCount,jdbcType=VARCHAR}, #{planStartDate,jdbcType=DATE}, #{planEndDate,jdbcType=DATE}, 
+      #{planStatus,jdbcType=VARCHAR}, #{by1,jdbcType=VARCHAR}, #{by2,jdbcType=VARCHAR}, 
+      #{by3,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.neusoft.entity.ProductPlan" >
+    insert into product_plan
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="planNum != null" >
+        plan_num,
+      </if>
+      <if test="orderNum != null" >
+        order_num,
+      </if>
+      <if test="productNum != null" >
+        product_num,
+      </if>
+      <if test="planCount != null" >
+        plan_count,
+      </if>
+      <if test="planStartDate != null" >
+        plan_start_date,
+      </if>
+      <if test="planEndDate != null" >
+        plan_end_date,
+      </if>
+      <if test="planStatus != null" >
+        plan_status,
+      </if>
+      <if test="by1 != null" >
+        by1,
+      </if>
+      <if test="by2 != null" >
+        by2,
+      </if>
+      <if test="by3 != null" >
+        by3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="planNum != null" >
+        #{planNum,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null" >
+        #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="productNum != null" >
+        #{productNum,jdbcType=VARCHAR},
+      </if>
+      <if test="planCount != null" >
+        #{planCount,jdbcType=VARCHAR},
+      </if>
+      <if test="planStartDate != null" >
+        #{planStartDate,jdbcType=DATE},
+      </if>
+      <if test="planEndDate != null" >
+        #{planEndDate,jdbcType=DATE},
+      </if>
+      <if test="planStatus != null" >
+        #{planStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="by1 != null" >
+        #{by1,jdbcType=VARCHAR},
+      </if>
+      <if test="by2 != null" >
+        #{by2,jdbcType=VARCHAR},
+      </if>
+      <if test="by3 != null" >
+        #{by3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.neusoft.dao.ProductMapper" >
+  <resultMap id="BaseResultMap" type="com.neusoft.entity.Product" >
+    <result column="product_num" property="productNum" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="product_img_url" property="productImgUrl" jdbcType="VARCHAR" />
+    <result column="product_count" property="productCount" jdbcType="VARCHAR" />
+    <result column="by1" property="by1" jdbcType="VARCHAR" />
+    <result column="by2" property="by2" jdbcType="VARCHAR" />
+    <result column="by3" property="by3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List">
+		product_num, product_name, product_img_url, product_count
+	</sql>
+  <select id="selectAll"  resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from product
+  </select>
+  <select id="selectByNum"  resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from product
+    where product_num=#{product_num}
+  </select>
+  <select id="selectByName"  resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from product
+    where product_name=#{product_name}
+  </select>
+  <delete id="deleteByNum" parameterType="com.neusoft.entity.Product" >
+    delete from product
+    where product_num = #{product_num}
+  </delete>
+
+  <insert id="insert" parameterType="com.neusoft.entity.Product" >
+    insert into product (product_num, product_name, product_img_url, 
+      product_count, by1, by2, 
+      by3)
+    values (#{productNum,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{productImgUrl,jdbcType=VARCHAR}, 
+      #{productCount,jdbcType=VARCHAR}, #{by1,jdbcType=VARCHAR}, #{by2,jdbcType=VARCHAR}, 
+      #{by3,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.neusoft.entity.Product" >
+    insert into product
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="productNum != null" >
+        product_num,
+      </if>
+      <if test="productName != null" >
+        product_name,
+      </if>
+      <if test="productImgUrl != null" >
+        product_img_url,
+      </if>
+      <if test="productCount != null" >
+        product_count,
+      </if>
+      <if test="by1 != null" >
+        by1,
+      </if>
+      <if test="by2 != null" >
+        by2,
+      </if>
+      <if test="by3 != null" >
+        by3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="productNum != null" >
+        #{productNum,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productImgUrl != null" >
+        #{productImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="productCount != null" >
+        #{productCount,jdbcType=VARCHAR},
+      </if>
+      <if test="by1 != null" >
+        #{by1,jdbcType=VARCHAR},
+      </if>
+      <if test="by2 != null" >
+        #{by2,jdbcType=VARCHAR},
+      </if>
+      <if test="by3 != null" >
+        #{by3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

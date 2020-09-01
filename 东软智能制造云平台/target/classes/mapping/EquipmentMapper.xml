@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.neusoft.dao.EquipmentMapper" >
+  <resultMap id="BaseResultMap" type="com.neusoft.entity.Equipment" >
+    <result column="equipment_num" property="equipmentNum" jdbcType="VARCHAR" />
+    <result column="equipment_img_url" property="equipmentImgUrl" jdbcType="VARCHAR" />
+    <result column="equipment_status" property="equipmentStatus" jdbcType="VARCHAR" />
+    <result column="by1" property="by1" jdbcType="VARCHAR" />
+    <result column="by2" property="by2" jdbcType="VARCHAR" />
+    <result column="by3" property="by3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List">
+		equipment_num, equipment_img_url, equipment_status
+	</sql>
+  <select id="get" resultType="map">
+ SELECT CASE WHEN equipment_status='10' THEN '启用' WHEN equipment_status='20' THEN '停用' WHEN equipment_status='30' THEN '故障'
+end AS Status,count(*)as sum FROM equipment GROUP BY equipment_status
+    </select>
+  <select id="selectAll"  resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from equipment
+  </select>
+  <select id="selectByNum"  resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from equipment
+    where equipment_num=#{equipment_num}
+  </select>
+<!--  停用-->
+  <update id="update" parameterType="com.neusoft.entity.Product">
+		update equipment
+		set equipment_status = 20
+		where equipment_num=#{equipment_num}
+	</update>
+<!--  启用-->
+  <update id="update2" parameterType="com.neusoft.entity.Product">
+		update equipment
+		set equipment_status = 10
+		where equipment_num=#{equipment_num}
+	</update>
+  <delete id="deleteByNum" parameterType="com.neusoft.entity.Product" >
+    delete from equipment
+    where equipment_num = #{equipment_num}
+  </delete>
+  <insert id="insert" parameterType="com.neusoft.entity.Equipment" >
+    insert into equipment (equipment_num, equipment_img_url, equipment_status, 
+      by1, by2, by3)
+    values (#{equipmentNum,jdbcType=VARCHAR}, #{equipmentImgUrl,jdbcType=VARCHAR}, #{equipmentStatus,jdbcType=VARCHAR}, 
+      #{by1,jdbcType=VARCHAR}, #{by2,jdbcType=VARCHAR}, #{by3,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.neusoft.entity.Equipment" >
+    insert into equipment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="equipmentNum != null" >
+        equipment_num,
+      </if>
+      <if test="equipmentImgUrl != null" >
+        equipment_img_url,
+      </if>
+      <if test="equipmentStatus != null" >
+        equipment_status,
+      </if>
+      <if test="by1 != null" >
+        by1,
+      </if>
+      <if test="by2 != null" >
+        by2,
+      </if>
+      <if test="by3 != null" >
+        by3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="equipmentNum != null" >
+        #{equipmentNum,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentImgUrl != null" >
+        #{equipmentImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="equipmentStatus != null" >
+        #{equipmentStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="by1 != null" >
+        #{by1,jdbcType=VARCHAR},
+      </if>
+      <if test="by2 != null" >
+        #{by2,jdbcType=VARCHAR},
+      </if>
+      <if test="by3 != null" >
+        #{by3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>
